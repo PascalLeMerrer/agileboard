@@ -17,3 +17,5 @@ class Cards(models.Model):
     type = models.CharField(max_length=20)
     description = models.CharField(max_length=300)
     priority = models.IntegerField(default=1)
+    startdate = models.IntegerField(default=0)
+    enddate = models.IntegerField(default=0)
