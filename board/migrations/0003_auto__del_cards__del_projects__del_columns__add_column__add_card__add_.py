@@ -1,0 +1,158 @@
+# -*- coding: utf-8 -*-
+import datetime
+from south.db import db
+from south.v2 import SchemaMigration
+from django.db import models
+
+
+class Migration(SchemaMigration):
+
+    def forwards(self, orm):
+        # Deleting model 'Cards'
+        db.delete_table(u'board_cards')
+
+        # Deleting model 'Projects'
+        db.delete_table(u'board_projects')
+
+        # Deleting model 'Columns'
+        db.delete_table(u'board_columns')
+
+        # Adding model 'Column'
+        db.create_table(u'board_column', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('project', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['board.Project'])),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=50)),
+            ('limit', self.gf('django.db.models.fields.IntegerField')(default=0)),
+        ))
+        db.send_create_signal(u'board', ['Column'])
+
+        # Adding model 'Card'
+        db.create_table(u'board_card', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('project', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['board.Project'])),
+            ('column', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['board.Column'])),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=50)),
+            ('type', self.gf('django.db.models.fields.CharField')(max_length=20)),
+            ('description', self.gf('django.db.models.fields.CharField')(max_length=300)),
+            ('priority', self.gf('django.db.models.fields.IntegerField')(default=1)),
+            ('startdate', self.gf('django.db.models.fields.IntegerField')(default=0)),
+            ('enddate', self.gf('django.db.models.fields.IntegerField')(default=0)),
+        ))
+        db.send_create_signal(u'board', ['Card'])
+
+        # Adding model 'Project'
+        db.create_table(u'board_project', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=50)),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
+        ))
+        db.send_create_signal(u'board', ['Project'])
+
+
+    def backwards(self, orm):
+        # Adding model 'Cards'
+        db.create_table(u'board_cards', (
+            ('priority', self.gf('django.db.models.fields.IntegerField')(default=1)),
+            ('project', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['board.Projects'])),
+            ('enddate', self.gf('django.db.models.fields.IntegerField')(default=0)),
+            ('description', self.gf('django.db.models.fields.CharField')(max_length=300)),
+            ('startdate', self.gf('django.db.models.fields.IntegerField')(default=0)),
+            ('column', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['board.Columns'])),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=50)),
+            ('type', self.gf('django.db.models.fields.CharField')(max_length=20)),
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+        ))
+        db.send_create_signal(u'board', ['Cards'])
+
+        # Adding model 'Projects'
+        db.create_table(u'board_projects', (
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=50)),
+        ))
+        db.send_create_signal(u'board', ['Projects'])
+
+        # Adding model 'Columns'
+        db.create_table(u'board_columns', (
+            ('project', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['board.Projects'])),
+            ('limit', self.gf('django.db.models.fields.IntegerField')(default=0)),
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=50)),
+        ))
+        db.send_create_signal(u'board', ['Columns'])
+
+        # Deleting model 'Column'
+        db.delete_table(u'board_column')
+
+        # Deleting model 'Card'
+        db.delete_table(u'board_card')
+
+        # Deleting model 'Project'
+        db.delete_table(u'board_project')
+
+
+    models = {
+        u'auth.group': {
+            'Meta': {'object_name': 'Group'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '80'}),
+            'permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['auth.Permission']", 'symmetrical': 'False', 'blank': 'True'})
+        },
+        u'auth.permission': {
+            'Meta': {'ordering': "(u'content_type__app_label', u'content_type__model', u'codename')", 'unique_together': "((u'content_type', u'codename'),)", 'object_name': 'Permission'},
+            'codename': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['contenttypes.ContentType']"}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
+        },
+        u'auth.user': {
+            'Meta': {'object_name': 'User'},
+            'date_joined': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
+            'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),
+            'first_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
+            'groups': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['auth.Group']", 'symmetrical': 'False', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            'is_staff': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'is_superuser': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'last_login': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
+            'last_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
+            'password': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
+            'user_permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['auth.Permission']", 'symmetrical': 'False', 'blank': 'True'}),
+            'username': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '30'})
+        },
+        u'board.card': {
+            'Meta': {'object_name': 'Card'},
+            'column': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['board.Column']"}),
+            'description': ('django.db.models.fields.CharField', [], {'max_length': '300'}),
+            'enddate': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'priority': ('django.db.models.fields.IntegerField', [], {'default': '1'}),
+            'project': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['board.Project']"}),
+            'startdate': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
+            'type': ('django.db.models.fields.CharField', [], {'max_length': '20'})
+        },
+        u'board.column': {
+            'Meta': {'object_name': 'Column'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'limit': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'project': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['board.Project']"}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '50'})
+        },
+        u'board.project': {
+            'Meta': {'object_name': 'Project'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
+        },
+        u'contenttypes.contenttype': {
+            'Meta': {'ordering': "('name',)", 'unique_together': "(('app_label', 'model'),)", 'object_name': 'ContentType', 'db_table': "'django_content_type'"},
+            'app_label': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
+        }
+    }
+
+    complete_apps = ['board']
