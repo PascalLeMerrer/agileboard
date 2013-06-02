@@ -1,4 +1,5 @@
 *.pyc
 *.pyo
 *.swp
-env_AgileBoard/
+env_AgileBoard
+.DS_Store
