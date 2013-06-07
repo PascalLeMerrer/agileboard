@@ -3,8 +3,8 @@
 /* Controllers */
 
 angular.module('BoardApp.controllers', []).
-  controller('ProjectController', ['$scope', function ($scope) {
-    $scope.projects = [{name: "MonPremierProjet"}, {name: "the big One"}]
+  controller('ProjectController', ['$scope', 'ProjectService', function ($scope, ProjectService) {
+    $scope.projects = ProjectService.getProjects()
   }])
   .controller('MyCtrl2', [function() {
 
