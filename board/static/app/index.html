@@ -2,14 +2,21 @@
 <html lang="en" ng-app="BoardApp">
 <head>
   <meta charset="utf-8">
-  <title>BoardApp</title>
+  <title>Board App</title>
   <link rel="stylesheet" href="css/app.css"/>
+  <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css"/>
 </head>
 <body>
-  <ul class="menu">
-    <li><a href="#/projects">Project List</a></li>
-    <li><a href="#/view2">view2</a></li>
-  </ul>
+    <div class="navbar" bs-navbar>
+    <div class="navbar-inner">
+      <a class="brand" href="#">Title</a>
+      <ul class="nav">
+        <!-- You can use regular expressions -->
+        <li data-match-route="/projects"><a href="#/projects">Project List</a></li>
+        <li data-match-route="/view2"><a href="#/view2">view 2</a></li>
+      </ul>
+    </div>
+  </div>
 
   <div ng-view></div>
 
@@ -25,5 +32,8 @@
   <script src="js/filters.js"></script>
   <script src="js/directives.js"></script>
   <script src="lib/angular/angular-resource.js"></script>
+  <script src="lib/jquery-1.9.1.min.js"></script>
+  <script src="lib/bootstrap/js/bootstrap.min.js"></script>
+  <script src="lib/angular-strap.min.js"></script>
 </body>
 </html>
