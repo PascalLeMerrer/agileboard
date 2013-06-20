@@ -2,6 +2,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets, routers
 from board.models import Project, Column, Card
+from board import views
 
 # enable the admin:
 from django.contrib import admin
@@ -22,10 +23,10 @@ class CardViewSet(viewsets.ModelViewSet):
 
 # Routers provide an easy way of automatically determining the URL conf
 router = routers.DefaultRouter()
-router.register(r'users', UserViewSet)
 router.register(r'projects', ProjectViewSet)
 router.register(r'columns', ColumnViewSet)
 router.register(r'cards', CardViewSet)
+router.register(r'users', views.UserViewSet)
 
 urlpatterns = patterns('',
 
@@ -44,7 +45,7 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
 
     url(r'^admin/password_reset/$', 'django.contrib.auth.views.password_reset', name='admin_password_reset'),
-    (r'^admin/password_reset/done/$', 'django.contrib.auth.views.password_reset_done'),
-    (r'^reset/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$', 'django.contrib.auth.views.password_reset_confirm'),
-    (r'^reset/done/$', 'django.contrib.auth.views.password_reset_complete'),
+    url(r'^admin/password_reset/done/$', 'django.contrib.auth.views.password_reset_done'),
+    url(r'^reset/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$', 'django.contrib.auth.views.password_reset_confirm'),
+    url(r'^reset/done/$', 'django.contrib.auth.views.password_reset_complete'),
 )
