@@ -11,15 +11,7 @@ angular.module('BoardApp.controllers', ['ngCookies'])
       .success( function(data, status, headers, config)
         {
           userId = data.id;
-          $http.get('/projects/', {user: "http://localhost:8000/users/" + userId, title: title})
-            .success( function(project_data, project_status, project_headers, project_config)
-              {
-                $scope.projects = project_data;
-              })
-            .error( function (project_data, project_status, project_headers, project_config)
-              {
-                alert("can't load projects for user " +  userId);
-              });
+          listProjects();
         }
       )
       .error( function(data, status, headers, config)
@@ -39,7 +31,7 @@ angular.module('BoardApp.controllers', ['ngCookies'])
                        headers: { "X-CSRFToken": token }
                 })
               .success( function(data, status, headers, config){
-                alert('Project ' + data.title + ' created');
+                listProjects();
               })
               .error( function(data, status, headers, config){
                 alert('error: ' + data.detail);
@@ -47,5 +39,21 @@ angular.module('BoardApp.controllers', ['ngCookies'])
         }
 
     }
+
+    /**
+     * Display the updated list of projects
+     */
+    function listProjects() {
+      $http.get('/projects/', {user: "http://localhost:8000/users/" + userId, title: title})
+        .success( function(project_data, project_status, project_headers, project_config)
+          {
+            $scope.projects = project_data;
+          })
+        .error( function (project_data, project_status, project_headers, project_config)
+          {
+            alert("can't load projects for user " +  userId);
+          });
+    }
+
   }]);
 // ProjectController.$inject = ['$scope', '$http', '$cookies'];
