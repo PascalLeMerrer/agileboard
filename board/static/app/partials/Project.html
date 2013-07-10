@@ -1,0 +1,22 @@
+<div class="container" ng-controller="ColumnController">
+    <div class="row">
+        <h4>{{project.title}}</h4>
+
+        <ul>
+            <li ng-repeat="column in columns">
+                {{column.title}} - limit: {{column.limit}}
+            </li>
+        </ul>
+        <h4>Add a column</h4>
+        <form id="addColumnForm" action="">
+            <!--TODO: inject CSRF token -->
+            <input type="hidden" name="" value="{% csrf_token %}"/>
+            <label for="title">Title</label>
+            <input type="text" name="title" id="title"/>
+            <br>
+            <label for="user">User id</label>
+            <input type="user" name="user" id="user" value="1"/>
+            <button id="create" class="btn btn-primary" type="button">Add</button>
+        </form>
+    </div>
+</div>
